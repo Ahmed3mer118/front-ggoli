@@ -1,0 +1,61 @@
+<div class="min-h-screen bg-gray-50 flex">
+  <!-- Sidebar -->
+  <div class="bg-white shadow-sm border-r min-h-screen flex flex-col transition-all duration-300 ease-in-out"
+       [class.w-64]="isSidebarOpen"
+       [class.w-20]="!isSidebarOpen">
+
+    <!-- Sidebar Header -->
+    <div class="p-4 flex items-center justify-between h-16 border-b">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2 overflow-hidden">
+        <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+          <span class="text-white font-bold text-lg">G</span>
+        </div>
+        <span class="text-xl font-bold text-gray-900 whitespace-nowrap transition-all duration-300"
+              [class.hidden]="!isSidebarOpen">
+          GGoli Admin
+        </span>
+      </div>
+
+      <!-- Toggle Button -->
+      <button (click)="toggleSidebar()"
+              class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             class="h-5 w-5 text-gray-600"
+             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                [attr.d]="isSidebarOpen ? 'M15 19l-7-7 7-7' : 'M4 6h16M4 12h16M4 18h16'" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="px-2 py-4 flex-1">
+      <ul class="space-y-1">
+        <li *ngFor="let item of sidebarItems">
+          <a [routerLink]="item.href"
+             routerLinkActive="bg-purple-50 text-purple-500"
+             class="flex items-center p-3 rounded-lg transition-colors duration-200 hover:bg-purple-50 group">
+            
+            <!-- Icon -->
+            <span class="w-6 h-6 flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-{{item.icon}}"></i>
+            </span>
+
+            <!-- Label -->
+            <span class="ml-3 whitespace-nowrap transition-opacity duration-200"
+                  [class.opacity-0]="!isSidebarOpen"
+                  [class.pointer-events-none]="!isSidebarOpen">
+              {{ item.label }}
+            </span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <!-- <div class="flex-1 overflow-x-hidden">
+    <router-outlet></router-outlet>
+  </div> -->
+</div>

@@ -1,0 +1,122 @@
+<section id="contact" class="py-16 bg-gray-50 dark:bg-gray-800 transition-colors">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-3">Contact us </h2>
+        <div class="w-20 h-1 bg-blue-600 mx-auto"></div>
+      </div>
+  
+      <!-- Contact Content -->
+      <div class="flex flex-col lg:flex-row gap-10 lg:gap-12"
+      [ngClass]="{'justify-center': !safeLocationUrl}">
+        <!-- Contact Info Card -->
+        <div class="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-md"
+        [ngClass]="safeLocationUrl ? 'lg:w-1/2' : 'w-full lg:w-2/3 mx-auto'">
+          <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-6">Contact information </h3>
+          
+          <!-- Contact Details -->
+          <div class="space-y-5">
+            <div class="flex items-start gap-4">
+              <div class="mt-1 text-blue-600 dark:text-blue-400">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <div>
+                <h4 class="font-medium text-gray-600 dark:text-gray-300">Phone Number</h4>
+                <p class="text-gray-800 dark:text-white">{{ contactData?.phone || 'unavailable' }}</p>
+              </div>
+            </div>
+  
+            <div class="flex items-start gap-4">
+              <div class="mt-1 text-blue-600 dark:text-blue-400">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <h4 class="font-medium text-gray-600 dark:text-gray-300">Email  </h4>
+                <p class="text-gray-800 dark:text-white">{{ contactData?.email || 'unavailable' }}</p>
+              </div>
+            </div>
+  
+            <div class="flex items-start gap-4">
+              <div class="mt-1 text-blue-600 dark:text-blue-400">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <h4 class="font-medium text-gray-600 dark:text-gray-300">Address</h4>
+                <p class="text-gray-800 dark:text-white">{{ contactData?.address || 'unavailable' }}</p>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Social Media -->
+          <div class="mt-8">
+            <h4 class="font-medium text-gray-600 dark:text-gray-300 mb-4">Social Media  </h4>
+            <div class="flex gap-4">
+              <a *ngIf="contactData?.socialLinks?.facebook" 
+                 [href]="contactData.socialLinks.facebook" 
+                 target="_blank"
+                 class="w-10 h-10 rounded-full bg-blue-100 dark:bg-gray-600 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-gray-500 transition-colors">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a *ngIf="contactData?.socialLinks?.twitter" 
+                 [href]="contactData.socialLinks.twitter" 
+                 target="_blank"
+                 class="w-10 h-10 rounded-full bg-blue-100 dark:bg-gray-600 flex items-center justify-center text-blue-400 hover:bg-blue-200 dark:hover:bg-gray-500 transition-colors">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a *ngIf="contactData?.socialLinks?.instagram" 
+                 [href]="contactData.socialLinks.instagram" 
+                 target="_blank"
+                 class="w-10 h-10 rounded-full bg-pink-100 dark:bg-gray-600 flex items-center justify-center text-pink-500 hover:bg-pink-200 dark:hover:bg-gray-500 transition-colors">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a *ngIf="contactData?.socialLinks?.linkedin" 
+                 [href]="contactData.socialLinks.linkedin" 
+                 target="_blank"
+                 class="w-10 h-10 rounded-full bg-blue-100 dark:bg-gray-600 flex items-center justify-center text-blue-700 hover:bg-blue-200 dark:hover:bg-gray-500 transition-colors">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Contact Form / Map -->
+        <div class="lg:w-1/2">
+          <!-- Option 1: Contact Form -->
+          <div class="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-md h-full">
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-6">أرسل لنا رسالة</h3>
+            <form class="space-y-4">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الاسم</label>
+                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white">
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">البريد الإلكتروني</label>
+                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white">
+              </div>
+              <div>
+                <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">الرسالة</label>
+                <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white"></textarea>
+              </div>
+              <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                إرسال الرسالة
+              </button>
+            </form>
+          </div> 
+          <!-- Option 2: Map (uncomment to use) -->
+          
+          <!-- <div class="h-full rounded-xl overflow-hidden shadow-lg" *ngIf="safeLocationUrl">
+            <iframe 
+              [src]="safeLocationUrl" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy"
+              class="min-h-[400px] rounded-xl">
+            </iframe>
+          </div> -->
+         
+        </div>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,42 @@
+<div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-bold mb-6">Edit About Section</h2>
+  
+    <form [formGroup]="aboutForm" (ngSubmit)="saveAbout()">
+      <div class="mb-4">
+        <label class="block font-semibold mb-2">Title</label>
+        <input type="text" formControlName="title" class="border p-2 rounded w-full" />
+      </div>
+  
+      <div class="mb-4">
+        <label class="block font-semibold mb-2">Subtitle</label>
+        <input type="text" formControlName="subtitle" class="border p-2 rounded w-full" />
+      </div>
+  
+      <div class="mb-4">
+        <label class="block font-semibold mb-2">Description 1</label>
+        <textarea formControlName="description1" class="border p-2 rounded w-full"></textarea>
+      </div>
+  
+      <div class="mb-4">
+        <label class="block font-semibold mb-2">Description 2</label>
+        <textarea formControlName="description2" class="border p-2 rounded w-full"></textarea>
+      </div>
+  
+      <div class="mb-4">
+        <label class="block font-semibold mb-2">Image</label>
+        <input type="file" (change)="onImageChange($event)" class="border p-2 rounded w-full" />
+        <div *ngIf="previewImage" class="mt-3">
+            <p class="text-sm text-gray-500 mb-1">Preview:</p>
+            <img [src]="'http://localhost:8000'+previewImage" alt="Preview" class="rounded-lg shadow-md max-h-60">
+          </div>
+      </div>
+  
+      <button
+        type="submit"
+        class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700"
+      >
+        Save Changes
+      </button>
+    </form>
+  </div>
+  

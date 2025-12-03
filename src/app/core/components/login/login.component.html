@@ -1,0 +1,63 @@
+<div id="login" class="auth-page active p-6">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Welcome back</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="mb-6">
+      <label
+        class="block text-gray-700 text-sm font-medium mb-2"
+        for="login-email"
+      >
+        Email
+      </label>
+      <input
+        id="login-contact"
+        formControlName="emailOrPhone"
+        type="text"
+        placeholder="Enter email or phone number"
+        class="w-full px-4 py-2 border rounded"
+      />
+      <div
+        *ngIf="loginForm.get('emailOrPhone')?.errors?.['invalidContact'] && loginForm.get('emailOrPhone')?.touched"
+        class="text-red-500 text-sm"
+      >
+        Please enter a valid email or phone number.
+      </div>
+    </div>
+    <div class="mb-6">
+      <label
+        class="block text-gray-700 text-sm font-medium mb-2"
+        for="login-password"
+      >
+        Password
+      </label>
+      <input
+        id="login-password"
+        formControlName="password"
+        type="password"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="••••••••"
+      />
+      <div class="text-right mt-2">
+        <a
+          routerLink="/auth/forget-password"
+          class="text-sm text-blue-600 hover:underline"
+          >Forgot password?</a
+        >
+      </div>
+    </div>
+    <button
+      type="submit"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+    >
+      Sign In
+    </button>
+  </form>
+
+  <div class="text-center mt-6">
+    <p class="text-gray-600">
+      Don't have an account?
+      <a routerLink="/auth/register" class="text-blue-600 hover:underline"
+        >Sign up</a
+      >
+    </p>
+  </div>
+</div>

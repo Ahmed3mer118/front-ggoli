@@ -1,0 +1,176 @@
+<!-- profile.component.html -->
+<div class="max-w-4xl mx-auto p-4">
+  <div class="flex flex-col md:flex-row gap-6" *ngIf="profileData">
+    <div class="w-full md:w-1/3 space-y-4">
+      <!-- Profile Card -->
+      <div class="bg-white rounded-lg shadow-md p-6 text-center border border-purple-100">
+        <div
+          class="w-24 h-24 mx-auto mb-4 rounded-full bg-purple-50 flex items-center justify-center overflow-hidden border-2 border-purple-200">
+          <i class="fas fa-user text-4xl text-purple-600"></i>
+        </div>
+        <h2 class="text-xl font-bold text-purple-800">{{profileData.username}}</h2>
+
+
+      </div>
+
+      <!-- Dashboard Menu -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-purple-100">
+        <h3 class="font-semibold mb-4 flex items-center text-black">
+          <i class="fas fa-tachometer-alt mr-2 text-purple-500"></i> Dashboard
+        </h3>
+        <ul class="space-y-2">
+          <li>
+            <a href="#" class="flex items-center text-black hover:text-purple-800 p-2 rounded hover:bg-purple-50">
+              <i class="fas fa-shopping-bag mr-3 text-purple-500"></i> Orders
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center text-black hover:text-purple-800 p-2 rounded hover:bg-purple-50">
+              <i class="fas fa-map-marker-alt mr-3 text-purple-500"></i> Addresses
+            </a>
+          </li>
+          <!-- <li>
+            <a href="#" class="flex items-center text-black hover:text-purple-800 p-2 rounded hover:bg-purple-50">
+              <i class="fas fa-heart mr-3 text-purple-500"></i> Wishlist
+            </a>
+          </li> -->
+
+          <li>
+            <button (click)="logout()"
+              class="w-full text-left flex items-center text-black hover:text-purple-800 p-2 rounded hover:bg-purple-50">
+              <i class="fas fa-sign-out-alt mr-3 text-purple-500"></i> Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full md:w-2/3 space-y-6">
+      <!-- Personal Info -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-purple-100">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold flex items-center text-purple-800">
+            <i class="fas fa-user-circle mr-3 text-purple-500"></i> Personal Information
+          </h2>
+          <button (click)="openEditModal()" class="text-sm text-black hover:text-purple-800 font-medium">
+            <i class="fas fa-pencil-alt mr-1"></i> Edit
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm text-black block">Full Name</label>
+            <p class="font-medium text-purple-800">{{profileData.username}}</p>
+          </div>
+          <div>
+            <label class="text-sm text-black block">Email</label>
+            <p class="font-medium text-purple-800">{{profileData.email}}</p>
+          </div>
+          <div>
+            <label class="text-sm text-black block">Phone</label>
+            <p class="font-medium text-purple-800">{{profileData.phone_number}}</p>
+          </div>
+
+        </div>
+
+        <div *ngIf="profileData.address.length > 0" class="mt-4">
+          <label class="font-medium text-black">Addresses:</label>
+          <ul class="list-disc pl-5 text-purple-800 mt-2">
+            <li *ngFor="let addr of profileData.address" class="mb-1">{{ addr }}</li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="isEditModalOpen"
+        class="fixed inset-0 bg-black bg-opacity-50 p-4 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+          <h3 class="text-lg font-bold mb-4 text-purple-800">Edit Personal Info</h3>
+
+          <form (ngSubmit)="updateProfile()">
+            <div class="mb-4">
+              <label class="block text-sm font-medium">Full Name</label>
+              <input type="text" [(ngModel)]="editData.username" name="username"
+                class="w-full border border-purple-300 rounded px-3 py-2 focus:outline-none focus:border-purple-500" />
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-sm font-medium">Email</label>
+              <input type="email" [(ngModel)]="editData.email" name="email" disabled
+                class="w-full border border-purple-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed" />
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-sm font-medium">Phone</label>
+              <input type="text" [(ngModel)]="editData.phone_number" name="phone_number"
+                class="w-full border border-purple-300 rounded px-3 py-2 focus:outline-none focus:border-purple-500" />
+            </div>
+
+            <div class="flex justify-end gap-2">
+              <button type="button" (click)="closeEditModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+                Cancel
+              </button>
+              <button type="submit" (click)="updateProfile()"
+                class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="bg-white rounded-lg shadow-md p-6 border border-purple-100" *ngIf="orders.length > 0">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold flex items-center text-black">
+            <i class="fas fa-shopping-bag mr-3 text-purple-800"></i> Recent Orders
+          </h2>
+        </div>
+
+        <div class="space-y-4">
+          <div *ngFor="let order of orders"
+            class="border border-purple-100 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <a routerLink="/orders/{{order._id}}" class="block">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <p class="font-bold text-black">Order #{{ order.orderNumber }}</p>
+                  <!-- <p class="text-sm text-black">{{ order.date | date }}</p> -->
+                </div>
+                <span class="px-3 py-1 text-xs rounded-full" [ngClass]="{
+                    'bg-yellow-100 text-yellow-800': order.status === 'pending',
+                    'bg-green-200 text-green-900': order.status === 'delivered',
+                    'bg-red-100 text-red-800': order.status === 'cancelled'
+                  }">
+                  {{ order.status | titlecase }}
+                </span>
+              </div>
+
+              <div class="flex flex-wrap gap-4 my-3">
+                <img *ngFor="let product of order.products" [src]="imageURL+'/'+product.productId.product_image"
+                  [alt]="product.productId.product_title"
+                  class="w-12 h-12 object-cover rounded border border-purple-100" />
+              </div>
+
+              <div class="flex justify-between items-center pt-3 border-t border-purple-100">
+                <p class="text-sm text-purple-600">{{ order.products.length }} items</p>
+
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoading && orders.length === 0"
+        class="bg-white rounded-lg shadow-md p-8 text-center border border-purple-100">
+        <i class="fas fa-box-open text-4xl mb-3 text-purple-400"></i>
+        <p class="text-purple-600">No recent orders found.</p>
+        <div class="mt-4">
+
+          <a routerLink='/products' class="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">
+            Start Shopping
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

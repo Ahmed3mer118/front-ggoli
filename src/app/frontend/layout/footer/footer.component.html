@@ -1,0 +1,63 @@
+<footer class="bg-gray-900 text-gray-200 py-10">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Logo & Description -->
+      <div>
+        <h2 class="text-xl font-bold text-white mb-2">GGoli</h2>
+        <p class="text-sm text-gray-400">
+          Discover the best products with unbeatable prices. Fast shipping and amazing support.
+        </p>
+      </div>
+  
+      <!-- Links -->
+      <div>
+        <h3 class="text-lg font-semibold text-white mb-3">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a routerLink="/" class="hover:underline text-sm">Home</a></li>
+          <li><a routerLink="/products" class="hover:underline text-sm">Products</a></li>
+          <li><a routerLink="/cart" class="hover:underline text-sm">Cart</a></li>
+        </ul>
+      </div>
+  
+      <!-- Help -->
+      <div>
+        <h3 class="text-lg font-semibold text-white mb-3">Support</h3>
+        <ul class="space-y-2">
+          <li><a href="#contact" class="hover:underline text-sm">Help Center</a></li>
+          <li><a href="#contact" class="hover:underline text-sm">Contact Us</a></li>
+          <li><a href="#" class="hover:underline text-sm">Shipping Info</a></li>
+          <!-- <li><a href="#" class="hover:underline text-sm">Returns</a></li> -->
+        </ul>
+      </div>
+  
+    <!-- Social Media -->
+<div>
+  <h3 class="text-lg font-semibold text-white mb-3">Follow Us</h3>
+  <div class="flex gap-4 text-xl">
+    <a *ngIf="contactData?.socialLinks?.facebook"
+       [href]="contactData.socialLinks.facebook"
+       target="_blank"
+       class="hover:text-blue-400">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a *ngIf="contactData?.socialLinks?.instagram"
+       [href]="contactData.socialLinks.instagram"
+       target="_blank"
+       class="hover:text-pink-400">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a *ngIf="contactData?.socialLinks?.twitter"
+       [href]="contactData.socialLinks.twitter"
+       target="_blank"
+       class="hover:text-blue-300">
+      <i class="fab fa-twitter"></i>
+    </a>
+  </div>
+</div>
+
+    </div>
+  
+    <div class="border-t border-gray-700 mt-10 pt-4 text-center text-sm text-gray-400">
+      &copy; 2025 MyStore. All rights reserved.
+    </div>
+  </footer>
+  

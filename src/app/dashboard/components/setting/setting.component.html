@@ -1,0 +1,58 @@
+<div class="mb-6">
+  <h2 class="text-xl font-bold text-gray-800">Setting</h2>
+  <!-- <p class="text-green-500 font-medium mt-1">تم تحميل الإعدادات بنجاح</p> -->
+</div>
+
+<!-- Navigation Tabs -->
+<div class="mb-8">
+  <div class="flex border-b border-gray-200">
+    <button class="px-4 py-2 font-medium text-sm border-b-2 border-transparent
+               hover:text-blue-600 hover:border-blue-500 transition-colors
+               focus:outline-none" [class.border-blue-600]="activeSection === 'hero'"
+      [class.text-blue-600]="activeSection === 'hero'" (click)="openSection('hero')">
+      Hero Section
+    </button>
+    <button class="px-4 py-2 font-medium text-sm border-b-2 border-transparent
+               hover:text-blue-600 hover:border-blue-500 transition-colors
+               focus:outline-none" [class.border-blue-600]="activeSection === 'about'"
+      [class.text-blue-600]="activeSection === 'about'" (click)="openSection('about')">
+      About Section
+    </button>
+    <button class="px-4 py-2 font-medium text-sm border-b-2 border-transparent
+             hover:text-blue-600 hover:border-blue-500 transition-colors
+             focus:outline-none" [class.border-blue-600]="activeSection === 'testimonial'"
+      [class.text-blue-600]="activeSection === 'testimonial'" (click)="openSection('testimonial')">
+      Testimonial Section
+    </button>
+    <button class="px-4 py-2 font-medium text-sm border-b-2 border-transparent
+             hover:text-blue-600 hover:border-blue-500 transition-colors
+             focus:outline-none" [class.border-blue-600]="activeSection === 'contact'"
+      [class.text-blue-600]="activeSection === 'contact'" (click)="openSection('contact')">
+      Contact Section
+    </button>
+  </div>
+</div>
+
+<!-- Modal Overlay -->
+<div *ngIf="activeSection" class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+  <!-- Modal Container -->
+  <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl relative max-h-[90vh] overflow-y-auto">
+    <!-- Close Button -->
+    <button (click)="closeSection()"
+      class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition-colors p-1 rounded-full hover:bg-gray-100"
+      aria-label="Close modal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Dynamic Content -->
+    <ng-container [ngSwitch]="activeSection">
+      <app-here-section *ngSwitchCase="'hero'"></app-here-section>
+      <app-about-section *ngSwitchCase="'about'"></app-about-section>
+      <app-contact-section *ngSwitchCase="'contact'"></app-contact-section>
+      <app-testimonial-section *ngSwitchCase="'testimonial'"></app-testimonial-section>
+    </ng-container>
+  </div>
+</div>

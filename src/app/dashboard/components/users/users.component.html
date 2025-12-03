@@ -1,0 +1,238 @@
+<section id="users" class="bg-white rounded-xl shadow-sm p-6">
+  <!-- Header Section -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        User Management
+      </h2>
+      <p class="text-sm text-gray-500 mt-1">Manage all registered users and their permissions</p>
+    </div>
+    <!-- <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+      </svg>
+      Add User
+    </button> -->
+  </div>
+
+  <!-- Users Table -->
+  <div class="border border-gray-100 rounded-lg overflow-hidden" *ngIf="!isLoading; else loading">
+    <div class="overflow-x-auto">
+      <table class="w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              User
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Email
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Role
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Status
+            </th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let user of users" class="hover:bg-gray-50 transition-colors duration-150">
+            <!-- User Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name={{user.username}}&background=random" alt="">
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ user.username }}</div>
+                  <!-- <div class="text-xs text-gray-500">ID: {{ user._id  }}</div> -->
+                </div>
+              </div>
+            </td>
+
+            <!-- Email Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">{{ user.email }}</div>
+              
+            </td>
+
+            <!-- Role Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-purple-100 text-purple-800': user.role === 'admin',
+                  'bg-blue-100 text-blue-800': user.role === 'manager',
+                  'bg-gray-100 text-gray-800': user.role === 'user'
+                }">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" *ngIf="user.role === 'admin'">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+                {{ user.role | titlecase }}
+              </span>
+            </td>
+
+            <!-- Status Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': user.isVerified,
+                  'bg-yellow-100 text-yellow-800': !user.isVerified && user.isActive,
+                  'bg-red-100 text-red-800': !user.isVerified
+                }">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" *ngIf="user.isVerified" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" *ngIf="!user.isVerified && user.isActive" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" *ngIf="!user.isActive" />
+                </svg>
+                {{ user.isVerified ? 'Verified' : (user.isActive ? 'Pending' : 'Inactive') }}
+              </span>
+            </td>
+
+            <!-- Actions Column -->
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex justify-end space-x-2">
+                <button (click)="viewOrders(user.order_ids)" class="text-blue-600 hover:text-blue-900 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                  Orders
+                </button>
+               
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+ <!-- Orders Modal -->
+<!-- <div *ngIf="showOrdersModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"> -->
+
+    <div *ngIf="selectedUserOrders.length > 0" class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <!-- Close Button -->
+        <div class="sticky top-0 bg-white p-4 flex justify-end border-b">
+          <button (click)="selectedUserOrders = []" class="text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+    
+        <div class="p-6">
+          <div *ngFor="let order of selectedUserOrders" class="mb-8 border border-gray-200 rounded-lg p-6">
+            <!-- Order Info -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div class="bg-blue-50 p-3 rounded-lg">
+                <p class="text-sm text-blue-600 font-medium">Order Number</p>
+                <p class="text-lg font-semibold text-gray-800">{{ order.orderNumber }}</p>
+              </div>
+              
+              <div class="bg-green-50 p-3 rounded-lg">
+                <p class="text-sm text-green-600 font-medium">Status</p>
+                <p class="text-lg font-semibold text-gray-800">{{ order.status }}</p>
+              </div>
+              
+              <div class="bg-purple-50 p-3 rounded-lg">
+                <p class="text-sm text-purple-600 font-medium">Payment</p>
+                <p class="text-lg font-semibold text-gray-800">{{ order.paymentMethod }}</p>
+              </div>
+              
+              <div class="bg-orange-50 p-3 rounded-lg">
+                <p class="text-sm text-orange-600 font-medium">Created At</p>
+                <p class="text-lg font-semibold text-gray-800">{{ order.createdAt | date: 'medium' }}</p>
+              </div>
+            </div>
+    
+            <!-- Shipping Info -->
+            <div class="bg-gray-50 p-4 rounded-lg mb-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-3">Shipping Info</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-500">Address</p>
+                  <p class="text-gray-800">{{ order.shippingData.address.join(', ') }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Phone</p>
+                  <p class="text-gray-800">{{ order.shippingData.phone }}</p>
+                </div>
+              </div>
+            </div>
+    
+            <!-- Products Table -->
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Products</h3>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Product</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Quantity</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Price</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr *ngFor="let product of order.products">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-800">
+                      {{ product.productId.product_title }}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-800">
+                      {{ product.quantity }}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-800">
+                      {{ product.price | currency }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+    
+            <!-- Order Summary -->
+            <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+              <h3 class="text-lg font-semibold text-gray-800 mb-3">Order Summary</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <p class="text-sm text-gray-500">Subtotal</p>
+                  <p class="text-gray-800">{{ getSubtotal(order) | currency }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Shipping</p>
+                  <p class="text-gray-800">{{ order.shippingCost || 0 | currency }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Total</p>
+                  <p class="text-lg font-semibold text-blue-600">{{ getTotal(order) | currency }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Footer -->
+        <div class="sticky bottom-0 bg-white p-4 border-t flex justify-end">
+          <button 
+            (click)="selectedUserOrders = []" 
+            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+<!-- </div> -->
+
+
+  <!-- Loading State -->
+  <ng-template #loading>
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  </ng-template>
+</section>

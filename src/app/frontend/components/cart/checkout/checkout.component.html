@@ -1,0 +1,106 @@
+<form #checkoutForm="ngForm" (ngSubmit)="placeOrder()" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+    <!-- Form Title -->
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Shipping Information</h2>
+    
+    <!-- Address Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="space-y-2">
+        <label for="address1" class="block text-sm font-medium text-gray-700">City*</label>
+        <input 
+          type="text" 
+          id="address1" 
+          name="address1" 
+          [(ngModel)]="address1" 
+          placeholder="e.g. Cairo" 
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+      </div>
+      
+      <div class="space-y-2">
+        <label for="address2" class="block text-sm font-medium text-gray-700">District*</label>
+        <input 
+          type="text" 
+          id="address2" 
+          name="address2" 
+          [(ngModel)]="address2" 
+          placeholder="e.g. Nasr City" 
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+      </div>
+    </div>
+  
+    <div class="grid grid-cols-1 gap-4 mb-4">
+      <div class="space-y-2">
+        <label for="address3" class="block text-sm font-medium text-gray-700">Street*</label>
+        <input 
+          type="text" 
+          id="address3" 
+          name="address3" 
+          [(ngModel)]="address3" 
+          placeholder="e.g. Abbas El-Akkad" 
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+      </div>
+      
+      <div class="space-y-2">
+        <label for="address4" class="block text-sm font-medium text-gray-700">Apartment Details*</label>
+        <input 
+          type="text" 
+          id="address4" 
+          name="address4" 
+          [(ngModel)]="address4" 
+          placeholder="e.g. Building 5, Apt 12" 
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+      </div>
+    </div>
+  
+    <!-- Phone Field -->
+    <div class="mb-4">
+      <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number*</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          name="phone" 
+          [(ngModel)]="phone" 
+          placeholder="e.g. 1234567890" 
+          required
+          class="block w-full pl-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+    </div>
+  
+    <!-- Payment Method -->
+    <div class="mb-6">
+      <label for="paymentMethod" class="block text-sm font-medium text-gray-700">Payment Method*</label>
+      <select 
+        id="paymentMethod" 
+        name="paymentMethod" 
+        [(ngModel)]="paymentMethod" 
+        required
+        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option value="" disabled selected>Select payment method</option>
+        <option value="Cash">Cash on Delivery</option>
+        <option value="CreditCard">Credit Card</option>
+        <option value="Instapay">Instapay</option>
+      </select>
+    </div>
+  
+    <!-- Submit Button -->
+    <button 
+      type="submit" 
+      [disabled]="checkoutForm.invalid"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors"
+    >
+      <span class="flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+        </svg>
+        Confirm Order
+      </span>
+    </button>
+  </form>

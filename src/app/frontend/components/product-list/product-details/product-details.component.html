@@ -1,0 +1,125 @@
+@if(productDetail) {
+<div
+  class="max-w-4xl my-5 mx-auto bg-white rounded-xl shadow-lg overflow-hidden"
+>
+  <div class="md:flex">
+
+    <div class="md:w-1/2 p-6 flex items-center justify-center bg-gray-50">
+      <img
+        [src]="'http://localhost:8000/uploads/' + productDetail.product_image"
+        [alt]="productDetail.product_title"
+        class="w-full h-96 rounded-xl object-cover"
+      />
+    </div>
+
+    <div class="md:w-1/2 p-8">
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+          {{ productDetail.product_title }}
+        </h1>
+        <p class="text-purple-600 mb-4">
+          {{ productDetail.product_description }}
+        </p>
+      </div>
+
+
+      <div class="space-y-3 mb-8">
+        <div class="flex items-center">
+          <span class="w-24 font-medium text-black-700">Brand:</span>
+          <span class="text-purple-900">{{ brandName }}</span>
+        </div>
+        <div class="flex items-center">
+          <span class="w-24 font-medium text-black-700">Category:</span>
+          <span class="text-purple-900">{{ productDetail.category_name }}</span>
+        </div>
+        <div class="flex items-center ">
+       
+          <span class="w-24 font-medium text-black-700">Subcategory:</span>
+          <span class="text-purple-900">{{ subcategoryName}}</span>
+        </div>
+      </div>
+
+
+      <div class="mb-8">
+        <div class="text-3xl font-bold text-purple-600 mb-2">
+          {{ productDetail.price }} EGP
+        </div>
+        <div class="flex items-center">
+          <span class="font-medium text-gray-700 mr-2">Status:</span>
+          <span
+            class="px-2 py-1 rounded-full text-sm font-semibold"
+            [ngClass]="{
+              'bg-green-100 text-green-800': productDetail.isActive,
+              'bg-red-100 text-red-800': !productDetail.isActive
+            }"
+          >
+            {{ productDetail.isActive ? "Availability" : "Un Availability" }}
+          </span>
+        </div>
+      </div>
+
+
+      <div class="flex space-x-4">
+        <button
+        (click)="addCart(productDetail)"
+          class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium transition duration-200 flex items-center justify-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"
+            />
+          </svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
+@if(relatedProducts.length > 0) {
+  <div class="max-w-6xl mx-auto mt-12 mb-3">
+    <h2 class="text-2xl font-bold mb-6">Related Products</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        *ngFor="let product of relatedProducts"
+        (click)="_router.navigate(['/products/product', product?.routeProduct || product?._id])"
+        class="cursor-pointer border rounded-lg p-4 hover:shadow-lg transition"
+      >
+        <div class=" mb-4">
+          <img
+            [src]="'http://localhost:8000/uploads/' + product.product_image"
+            [alt]="product.product_title"
+            class="w-full h-48 object-cover rounded-lg"
+          />
+        </div>
+        <h3 class="font-semibold text-lg truncate">{{ product.product_title }}</h3>
+         <p class="text-purple-600 mb-2">{{ product.price }} EGP</p>
+        <!-- <div class="flex items-center">
+          <span class="w-24 font-medium text-black-700">Price:</span>
+          <span class="text-purple-900">{{ product.price }} EGP</span>
+        </div>
+        <div class="space-y-3 mb-8">
+          <div class="flex items-center">
+            <span class="w-24 font-medium text-black-700">Brand:</span>
+            <span class="text-purple-900">{{ brandName }}</span>
+          </div>
+          <div class="flex items-center">
+            <span class="w-24 font-medium text-black-700">Category:</span>
+            <span class="text-purple-900">{{ productDetail.category_name }}</span>
+          </div>
+          <div class="flex items-center ">
+         
+            <span class="w-24 font-medium text-black-700">Subcategory:</span>
+            <span class="text-purple-900">{{ subcategoryName}}</span>
+          </div>
+        </div> -->
+      </div>
+      
+    </div>
+  </div>  
+}

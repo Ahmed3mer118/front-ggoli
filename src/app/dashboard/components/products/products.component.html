@@ -1,0 +1,497 @@
+<section id="products" class="p-6 bg-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Products Management</h1>
+        <p class="text-gray-600 mt-2">Manage your product inventory and details</p>
+      </div>
+      
+      <a routerLink="add-product" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+        Add Product
+      </a>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="mb-6 bg-white p-4 rounded-lg shadow-sm">
+      <div class="relative">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search products..."
+          class="w-full p-2 pl-10 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="bg-white rounded-lg shadow-sm overflow-x-scroll">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let product of filteredProducts" class="hover:bg-gray-50">
+            <!-- Product Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-lg overflow-hidden">
+                  <img [src]="'http://localhost:8000/uploads/'+product.product_image" [alt]="product.product_title" class="h-full w-full object-cover">
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ product.product_title }}</div>
+                  <div class="text-sm text-gray-500">{{ product.brand.brand_name }}</div>
+                </div>
+              </div>
+            </td>
+            
+            <!-- Price Column -->
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              ${{ product.price.toFixed(2) }}
+            </td>
+            
+            <!-- Stock Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900 font-medium" [ngClass]="{'text-red-600': product.stock <= product.minStock}">
+                {{ product.stock }}
+              </div>
+              <div class="text-xs text-gray-500">Min: {{ product.minStock }}</div>
+            </td>
+            
+            <!-- Category Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                {{ product.category_name }}
+              </span>
+            </td>
+            
+            <!-- Status Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" 
+                    [ngClass]="product.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                {{ product.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            
+            <!-- Actions Column -->
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <div class="flex space-x-2">
+                <!-- Edit Button -->
+                <button 
+                  (click)="editProduct(product.routeProduct)" 
+                  class="p-2 text-blue-600 hover:text-blue-900 hover:bg-blue-50 rounded-full"
+                  title="Edit"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+              
+                <!-- Toggle Status Button -->
+          
+                <button 
+                  (click)="toggleProductStatus(product.routeProduct,product.isActive)" 
+                  class="p-2 text-green-600 hover:text-green-900 hover:bg-green-50 rounded-full"
+                  [title]="product.isActive ? 'Deactivate' : 'Activate'"
+                  >
+                  <svg *ngIf="product.isActive" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                  </svg>
+                  <svg *ngIf="!product.isActive" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </button>
+              
+              
+              </div>
+            </td>
+          </tr>
+          
+          <!-- Empty State -->
+          <!-- <tr *ngIf="filteredProducts.length === 0">
+            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">
+              No products found
+            </td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- <div *ngIf="showEditForm" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 relative">
+  
+      <h2 class="text-xl font-bold mb-4">Edit Product</h2>
+  
+      <form
+      [formGroup]="editedProduct"
+      (ngSubmit)="onSubmit()"
+      class="space-y-6 max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md"
+    >
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700"
+          >Product Title *</label
+        >
+        <input
+          formControlName="product_title"
+          class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-300]="
+            productForm.get('product_title')?.invalid &&
+            productForm.get('product_title')?.touched
+          "
+        />
+        <div
+          *ngIf="
+            productForm.get('product_title')?.invalid &&
+            productForm.get('product_title')?.touched
+          "
+          class="text-red-500 text-xs"
+        >
+          <span *ngIf="productForm.get('product_title')?.errors?.['required']"
+            >Title is required</span
+          >
+          <span *ngIf="productForm.get('product_title')?.errors?.['minlength']"
+            >Must be at least 3 characters</span
+          >
+        </div>
+      </div>
+    
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700"
+          >Product Image *</label
+        >
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-300]="
+            productForm.get('product_image')?.invalid &&
+            productForm.get('product_image')?.touched
+          "
+        />
+    
+        <div
+          *ngIf="productForm.get('product_image')?.value && !selectedFile"
+          class="mb-4"
+        >
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >Current Image:</label
+          >
+          <img
+            [src]="
+              'http://localhost:3000/uploads/' +productForm.get('product_image')?.value
+            "
+            alt="Current product image"
+            class="w-32 h-32 object-cover rounded"
+          />
+        </div>
+    
+        <div
+          *ngIf="
+            productForm.get('product_image')?.invalid &&
+            productForm.get('product_image')?.touched
+          "
+          class="text-red-500 text-xs"
+        >
+          <span *ngIf="productForm.get('product_image')?.errors?.['required']"
+            >Image is required</span
+          >
+        </div>
+      </div>
+    
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">Price *</label>
+          <div class="relative rounded-md shadow-sm">
+            <div
+              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+            >
+              <span class="text-gray-500 sm:text-sm">$</span>
+            </div>
+            <input
+              type="number"
+              formControlName="price"
+              class="block w-full pl-7 pr-12 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              [class.border-red-300]="
+                productForm.get('price')?.invalid &&
+                productForm.get('price')?.touched
+              "
+              min="0.01"
+              step="0.01"
+            />
+          </div>
+          <div
+            *ngIf="
+              productForm.get('price')?.invalid && productForm.get('price')?.touched
+            "
+            class="text-red-500 text-xs"
+          >
+            <span *ngIf="productForm.get('price')?.errors?.['required']"
+              >Price is required</span
+            >
+            <span *ngIf="productForm.get('price')?.errors?.['min']"
+              >Must be at least $0.01</span
+            >
+          </div>
+        </div>
+    
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">Stock *</label>
+          <input
+            type="number"
+            formControlName="stock"
+            class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            [class.border-red-300]="
+              productForm.get('stock')?.invalid && productForm.get('stock')?.touched
+            "
+            min="0"
+          />
+          <div
+            *ngIf="
+              productForm.get('stock')?.invalid && productForm.get('stock')?.touched
+            "
+            class="text-red-500 text-xs"
+          >
+            <span *ngIf="productForm.get('stock')?.errors?.['required']"
+              >Stock is required</span
+            >
+            <span *ngIf="productForm.get('stock')?.errors?.['min']"
+              >Must be at least 0</span
+            >
+          </div>
+        </div>
+      </div>
+    
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Min Stock</label>
+        <input
+          type="number"
+          formControlName="minStock"
+          class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-300]="
+            productForm.get('minStock')?.invalid &&
+            productForm.get('minStock')?.touched
+          "
+          min="0"
+        />
+        <div
+          *ngIf="
+            productForm.get('minStock')?.invalid &&
+            productForm.get('minStock')?.touched
+          "
+          class="text-red-500 text-xs"
+        >
+          <span *ngIf="productForm.get('minStock')?.errors?.['min']"
+            >Must be 0 or higher</span
+          >
+        </div>
+      </div>
+    
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Description *</label>
+        <textarea
+          formControlName="product_description"
+          rows="4"
+          class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-300]="
+            productForm.get('product_description')?.invalid &&
+            productForm.get('product_description')?.touched
+          "
+        ></textarea>
+        <div
+          *ngIf="
+            productForm.get('product_description')?.invalid &&
+            productForm.get('product_description')?.touched
+          "
+          class="text-red-500 text-xs"
+        >
+          <span *ngIf="productForm.get('product_description')?.errors?.['required']"
+            >Description is required</span
+          >
+          <span
+            *ngIf="productForm.get('product_description')?.errors?.['minlength']"
+            >Must be at least 10 characters</span
+          >
+        </div>
+      </div>
+    
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700"
+          >Category Name *</label
+        >
+        <input
+          formControlName="category_name"
+          class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          [class.border-red-300]="
+            productForm.get('category_name')?.invalid &&
+            productForm.get('category_name')?.touched
+          "
+          placeholder="Men Or Women"
+        />
+        <div
+          *ngIf="
+            productForm.get('category_name')?.invalid &&
+            productForm.get('category_name')?.touched
+          "
+          class="text-red-500 text-xs"
+        >
+          <span *ngIf="productForm.get('category_name')?.errors?.['required']"
+            >Category name is required</span
+          >
+        </div>
+      </div>
+    
+      <div class="space-y-2">
+        <div class="flex justify-between items-center">
+          <label class="block text-sm font-medium text-gray-700">Brand *</label>
+          <button
+            type="button"
+            (click)="showBrandInput = !showBrandInput"
+            class="text-xs text-blue-600 hover:text-blue-800"
+          >
+            {{ showBrandInput ? "Cancel" : "+ Add New Brand" }}
+          </button>
+        </div>
+    
+        <div *ngIf="!showBrandInput">
+          <select
+            formControlName="brand"
+            class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            [class.border-red-300]="
+              productForm.get('brand')?.invalid && productForm.get('brand')?.touched
+            "
+          >
+            <option value="">Select a brand</option>
+            <option *ngFor="let item of brands" [value]="item._id">
+              {{ item.brand_name }}
+            </option>
+          </select>
+        </div>
+    
+        <div *ngIf="showBrandInput" class="flex space-x-2">
+          <input
+            #newBrandInput
+            type="text"
+            placeholder="Enter new brand name"
+            class="flex-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <button
+            type="button"
+            (click)="addNewBrand(newBrandInput.value); newBrandInput.value = ''"
+            class="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Add
+          </button>
+        </div>
+    
+        <div
+          *ngIf="
+            productForm.get('brand')?.invalid && productForm.get('brand')?.touched
+          "
+          class="text-red-500 text-xs"
+        >
+          <span *ngIf="productForm.get('brand')?.errors?.['required']"
+            >Brand is required</span
+          >
+        </div>
+      </div>
+    
+      <div class="space-y-2">
+        <div class="flex justify-between items-center">
+          <label class="block text-sm font-medium text-gray-700"
+            >Subcategory *</label
+          >
+          <button
+            type="button"
+            (click)="showSubcategoryInput = !showSubcategoryInput"
+            class="text-xs text-blue-600 hover:text-blue-800"
+          >
+            {{ showSubcategoryInput ? "Cancel" : "+ Add New Subcategory" }}
+          </button>
+        </div>
+    
+        <div *ngIf="!showSubcategoryInput">
+          <select
+            formControlName="subcategory"
+            class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            [class.border-red-300]="
+              productForm.get('subcategory')?.invalid &&
+              productForm.get('subcategory')?.touched
+            "
+          >
+            <option value="">Select a subcategory</option>
+            <option *ngFor="let item of subcategories" [value]="item._id">
+              {{ item.subcategory_name }}
+            </option>
+          </select>
+        </div>
+    
+        <div *ngIf="showSubcategoryInput" class="flex space-x-2">
+          <input
+            #newSubcategoryInput
+            type="text"
+            placeholder="Enter new subcategory name"
+            class="flex-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          <button
+            type="button"
+            (click)="
+              addNewSubcategory(newSubcategoryInput.value);
+              newSubcategoryInput.value = ''
+            "
+            class="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Add
+          </button>
+        </div>
+    
+        <div
+          *ngIf="
+            productForm.get('subcategory')?.invalid &&
+            productForm.get('subcategory')?.touched
+          "
+          class="text-red-500 text-xs"
+        >
+          <span *ngIf="productForm.get('subcategory')?.errors?.['required']"
+            >Subcategory is required</span
+          >
+        </div>
+      </div>
+    
+      <div class="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          id="isActive"
+          formControlName="isActive"
+          class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        />
+        <label for="isActive" class="block text-sm font-medium text-gray-700"
+          >Is Active</label
+        >
+      </div>
+    
+      <div class="pt-4">
+        <button
+          type="submit"
+          class="w-full px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed"
+        >
+          Save Product
+        </button>
+      </div>
+    </form>
+    
+  
+    </div>
+  </div>
+   -->
+</section>

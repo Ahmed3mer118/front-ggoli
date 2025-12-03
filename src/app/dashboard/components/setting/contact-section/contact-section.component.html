@@ -1,0 +1,25 @@
+<form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <label>Phone</label>
+    <input type="text" formControlName="phone" class="border p-2 w-full" />
+  
+    <label>Email</label>
+    <input type="email" formControlName="email" class="border p-2 w-full" />
+  
+    <label>Address</label>
+    <input type="text" formControlName="address" class="border p-2 w-full" />
+  
+    <h3 class="font-bold mt-4">Social Media Links</h3>
+  
+    <div formGroupName="socialLinks">
+      <label for="facebook">Facebook URL</label>
+      <input placeholder="Facebook URL" formControlName="facebook" class="border rounded-md p-2 mt-2 w-full" />
+      <label for="facebook">Instagram URL</label>
+      <input placeholder="Instagram URL" formControlName="instagram" class="border rounded-md p-2  mt-2 w-full" />
+      <!-- <label for="facebook">Instagram URL</label> -->
+      <!-- <input placeholder="LinkedIn URL" formControlName="linkedin" class="border rounded-md p-2 mt-2 w-full" /> -->
+    </div>
+    <input placeholder="Location" formControlName="location" class="border rounded-md p-2 w-full" />
+  
+    <button type="submit" class="bg-purple-500 text-white px-4 py-2 rounded">Save</button>
+  </form>
+  

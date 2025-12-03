@@ -1,0 +1,33 @@
+<section class="relative text-black max-h-screen overflow-hidden">
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-black/10 z-0"></div>
+
+  <!-- Background Image -->
+  <div
+  class="absolute inset-0 bg-cover  transition-all duration-500 bg-center"
+  [ngStyle]="{'background-image': 'url(' + 'http://localhost:8000' + heroData?.backgroundImage + ')'}">
+</div>
+
+  <!-- Content -->
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 z-20 animate-fade-slide">
+    <div class="max-w-3xl bg-black/20 bg-blur rounded-2xl p-5 ">
+      <!-- Title -->
+      <h1 class="text-2xl md:text-4xl font-bold leading-tight mb-6">
+        {{ heroData?.title }}
+      </h1>
+
+      <!-- Description -->
+      <p class="text-xl md:text-2xl mb-8 text-white">
+        {{ heroData?.description }}
+      </p>
+
+      <!-- Button -->
+      <a [routerLink]="[heroData?.buttonLink]">
+        <button
+          class="bg-white text-purple-500 hover:bg-gray-100 text-lg px-8 py-3 rounded-lg font-semibold shadow">
+          {{ heroData?.buttonText }}
+        </button>
+      </a>
+    </div>
+  </div>
+</section>

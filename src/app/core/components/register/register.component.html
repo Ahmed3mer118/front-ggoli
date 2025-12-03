@@ -1,0 +1,67 @@
+<div id="register" class="auth-page p-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Create an account</h2>
+    <div *ngIf="successMsg" class="bg-green-100 text-green-700 p-3 rounded mb-4">
+      {{ successMsg }}
+    </div>
+    
+    <div *ngIf="errMsg && !successMsg"  class="bg-red-100 text-red-700 p-3 rounded mb-4">
+      {{ errMsg }}
+    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="register-firstname">
+            First Name
+          </label>
+          <input id="register-firstname" type="text" formControlName="firstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ahmed">
+        </div>
+        <div>
+          <label class="block text-gray-700 text-sm font-medium mb-2" for="register-lastname">
+            Last Name
+          </label>
+          <input id="register-lastname" type="text" formControlName="lastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Amer">
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-medium mb-2" for="register-email">
+          Email Address
+        </label>
+        <input id="register-email" type="email"  formControlName="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="your@email.com">
+        <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid" class="text-red-600 text-sm mt-1">
+          <div *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</div>
+          <div *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email format</div>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-medium mb-2" for="register-email">
+          Phone Number
+        </label>
+        <input id="register-phoneNumber" type="text"  formControlName="phone_number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="010000000">
+        
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-medium mb-2"  for="register-password">
+          Password
+        </label>
+        <input id="register-password" type="password"formControlName="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="••••••••">
+        <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid" class="text-red-600 text-sm mt-1">
+          <div *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</div>
+        </div>
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-medium mb-2" for="register-confirm-password">
+          Confirm Password
+        </label>
+        <input id="register-confirm-password" type="password" formControlName="confirmPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="••••••••">
+        <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid" class="text-red-600 text-sm mt-1">
+          <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Password is required</div>
+        </div>
+      </div>
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+        Create Account
+      </button>
+    </form>
+    <div class="text-center mt-6">
+      <p class="text-gray-600">Already have an account? <a routerLink="/auth/login"  class="text-blue-600 hover:underline">Sign in</a></p>
+    </div>
+  </div>

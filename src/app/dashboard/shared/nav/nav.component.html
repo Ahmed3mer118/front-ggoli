@@ -1,0 +1,75 @@
+<div class="flex justify-between items-center mb-8">
+    <h1 class="text-2xl font-bold text-gray-800" id="page-title">Admin Dashboard</h1>
+
+    <div class="flex items-center gap-4">
+      <!-- Search -->
+      <!-- <div class="relative">
+        <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+      </div> -->
+      
+      <!-- Notifications -->
+      <div class="relative group z-20">
+        <button class="relative p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors">
+          <i class="fas fa-bell"></i>
+          <span *ngIf="lowStockNotifications.length" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {{ lowStockNotifications.length }}
+          </span>
+        </button>
+      
+        <div class="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg overflow-hidden z-10 hidden group-hover:block">
+          <div class="p-3 border-b bg-gray-50">
+            <h3 class="font-medium text-gray-700">Notifications</h3>
+          </div>
+      
+          <ul class="divide-y divide-gray-100 max-h-80 overflow-y-auto">
+            <li *ngFor="let notif of lowStockNotifications" class="p-3 hover:bg-gray-50 cursor-pointer">
+              <div class="flex gap-3">
+                <div class="bg-yellow-100 text-yellow-600 p-2 rounded-full">
+                  <i [class]="notif.icon"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">{{ notif.title }}</p>
+                  <p class="text-xs text-gray-500">{{ notif.message }}</p>
+                  <p class="text-xs text-gray-400 mt-1">{{ notif.createdAt  }}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+      
+          <div class="p-3 border-t text-center bg-gray-50">
+            <a routerLink="/dashboard/notification" class="text-sm text-blue-600 hover:underline">View all</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Profile -->
+      <div class="relative group z-20">
+        <button class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100">
+          <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="profile" class="w-8 h-8 rounded-full">
+          <!-- <span class="hidden sm:inline text-sm font-medium">Ahmed</span> -->
+          <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+        </button>
+        
+        <div class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg overflow-hidden z-10 hidden group-hover:block">
+          <ul class="py-1">
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <i class="fas fa-user mr-2 text-gray-500"></i> Profile
+            </li>
+            
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+              <a routerLink="/dashboard/settings" class="text-sm text-blue-600 hover:underline">
+              <i class="fas fa-user mr-2 text-gray-500"></i> 
+              Setting</a>
+            </li>
+            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer border-t border-gray-100">
+              <button (click)="logout()">
+
+                <i class="fas fa-sign-out-alt mr-2 text-gray-500"></i> Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

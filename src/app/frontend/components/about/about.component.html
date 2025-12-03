@@ -1,0 +1,42 @@
+<section id="about" class="py-16 bg-white overflow-hidden">
+  <div class="container mx-auto px-4 animate-fade-slide">
+    <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">
+      {{ aboutData?.title }}
+    </h2>
+
+    <div class="flex flex-col md:flex-row items-center">
+      <!-- Image Section -->
+      <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8 animate-fade-left">
+        <img
+          [src]="'http://localhost:8000' + aboutData?.image"
+          [alt]="aboutData?.title"
+          class="rounded-lg shadow-lg w-full hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+
+      <!-- Text Section -->
+      <div class="md:w-1/2 animate-fade-right">
+        <h3 class="text-2xl font-semibold mb-4 text-gray-800">
+          {{ aboutData?.subtitle }}
+        </h3>
+        <p class="text-gray-600 mb-4 leading-relaxed">
+          {{ aboutData?.description1 }}
+        </p>
+        <p class="text-gray-600 mb-4 leading-relaxed">
+          {{ aboutData?.description2 }}
+        </p>
+
+        <!-- Features -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+          <div *ngFor="let feature of aboutData?.features"
+               class="bg-purple-50 p-4 rounded-lg border border-purple-100 hover:shadow-md transition-all animate-bounce-in">
+               <span class="text-purple-500 text-2xl mb-2"> <i [class]="feature.icon "></i></span>
+           
+            <p class="font-semibold">{{ feature.title }}</p>
+            <p class="text-sm text-purple-500">{{ feature.text }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

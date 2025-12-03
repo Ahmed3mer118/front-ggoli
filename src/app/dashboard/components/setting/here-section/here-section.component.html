@@ -1,0 +1,74 @@
+<div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8">
+    <h2 class="text-2xl font-bold mb-6 text-gray-700">Edit Hero Section</h2>
+  
+    <form [formGroup]="heroForm" (ngSubmit)="saveHero()" class="space-y-5">
+  
+      <!-- Title -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+        <input 
+          type="text" 
+          formControlName="title" 
+          class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
+  
+      <!-- Description -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+        <textarea 
+          formControlName="description" 
+          rows="3" 
+          class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
+        ></textarea>
+      </div>
+  
+      <!-- Button Text -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Button Text</label>
+        <input 
+          type="text" 
+          formControlName="buttonText" 
+          class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
+  
+      <!-- Button Link -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Button Link</label>
+        <input 
+          type="text" 
+          formControlName="buttonLink" 
+          class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500"
+        />
+      </div>
+  
+      <!-- Background Image Upload -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Background Image</label>
+        <input 
+          type="file" 
+          (change)="onImageChange($event)" 
+          accept="image/*"
+          class="w-full"
+        />
+      </div>
+  
+      <!-- Preview -->
+      <div *ngIf="previewImage" class="mt-3">
+        <p class="text-sm text-gray-500 mb-1">Preview:</p>
+        <img [src]="'http://localhost:8000'+previewImage" alt="Preview" class="rounded-lg shadow-md max-h-60">
+      </div>
+  
+      <!-- Save Button -->
+      <div class="pt-4">
+        <button 
+          type="submit" 
+          class="bg-purple-600 text-white px-6 py-2 rounded-lg shadow hover:bg-purple-700 transition">
+          Save Changes
+        </button>
+      </div>
+  
+    </form>
+  </div>
+  

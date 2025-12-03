@@ -1,0 +1,79 @@
+<!-- low-stock.component.html -->
+<div class="p-6 max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg>
+        Low Stock Products
+      </h2>
+   
+    </div>
+  
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && lowStockProducts.length === 0" class="text-center py-12 bg-green-50 rounded-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      <h3 class="text-lg font-medium text-gray-800 mb-1">All products have sufficient stock</h3>
+      <p class="text-gray-600">No inventory replenishment needed at this time</p>
+    </div>
+  
+    <!-- Products Grid -->
+    <div *ngIf="!isLoading && lowStockProducts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let product of lowStockProducts" class="border border-gray-200 p-5 rounded-xl bg-white hover:shadow-md transition-shadow">
+        <div class="flex justify-between items-start mb-3">
+          <h3 class="text-lg font-bold text-gray-800">{{ product.title }}</h3>
+          <span class="px-2 py-1 text-xs font-semibold rounded-full" 
+                [ngClass]="{
+                  'bg-red-100 text-red-800': product.stock === 0,
+                  'bg-yellow-100 text-yellow-800': product.stock > 0
+                }">
+            {{ product.stock === 0 ? 'Out of Stock' : 'Low Stock' }}
+          </span>
+        </div>
+  
+        <div class="space-y-2">
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-600">Current Stock:</span>
+            <span class="font-medium">{{ product.stock }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-600">Minimum Required:</span>
+            <span class="font-medium">{{ product.minStock }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-600">Difference:</span>
+            <span class="font-medium text-red-600">{{ product.minStock - product.stock }} units needed</span>
+          </div>
+        </div>
+  
+        <!-- <div class="mt-4 pt-3 border-t border-gray-100">
+          <button class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Request Restock
+          </button>
+        </div> -->
+      </div>
+    </div>
+  
+    <!-- Summary Footer -->
+    <div *ngIf="lowStockProducts.length > 0" class="mt-6 bg-blue-50 p-4 rounded-lg">
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-sm text-gray-700">
+          <span class="font-bold">{{ lowStockProducts.length }}</span> product(s) need attention. 
+        </span>
+      </div>
+    </div>
+  </div>

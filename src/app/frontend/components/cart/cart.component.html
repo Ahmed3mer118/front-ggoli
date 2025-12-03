@@ -1,0 +1,253 @@
+<!-- cart.component.html -->
+<div class="max-w-6xl mx-auto py-4 md:py-8 px-2 md:px-4">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-4 md:mb-8">
+    <h1 class="text-xl md:text-3xl font-bold text-purple-700">Your Shopping Cart</h1>
+    <span class="text-purple-600 font-medium text-sm md:text-base">
+      {{ cartItems.length }} {{ cartItems.length === 1 ? 'item' : 'items' }}
+    </span>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-8 md:py-12">
+    <i class="fas fa-spinner fa-spin text-2xl md:text-3xl text-purple-500 mb-2"></i>
+    <p class="text-purple-600 text-sm md:text-base">Loading your cart...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && cartItems.length === 0" class="text-center py-8 md:py-12 bg-purple-50 rounded-lg">
+    <i class="fas fa-shopping-cart text-4xl md:text-5xl text-purple-300 mb-4"></i>
+    <h3 class="text-lg md:text-xl font-semibold text-purple-700 mb-2">Your cart is empty</h3>
+    <p class="text-purple-500 text-sm md:text-base mb-4">Start shopping to add items to your cart</p>
+    <a routerLink="/products" class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 md:px-6 md:py-2 rounded-lg text-sm md:text-base">
+      <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
+    </a>
+  </div>
+
+  <!-- Cart Items - Mobile View -->
+  <div *ngIf="!isLoading && cartItems.length > 0" class="md:hidden space-y-4">
+    <div *ngFor="let item of cartItems" class="bg-white rounded-lg shadow-sm p-4 border border-purple-200">
+      <!-- Product Info -->
+      <div class="flex items-start space-x-3 mb-3">
+        <div class="w-16 h-16 md:w-20 md:h-20 bg-purple-50 rounded-lg overflow-hidden border border-purple-200 flex-shrink-0">
+          <img [src]="'http://localhost:8000/uploads/' + item.productId.product_image" 
+               [alt]="item.productId.product_title"
+               class="w-full h-full object-cover">
+        </div>
+        <div class="flex-1">
+          <h3 class="font-semibold text-black text-sm md:text-base">{{ item.productId.product_title }}</h3>
+   
+          
+          <!-- Price Mobile -->
+          <div class="mt-2">
+            <span class="text-green-700 font-medium text-sm">{{ item.currentPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
+            <div *ngIf="item.currentPrice !== item.originalPrice" class="text-xs text-gray-400 line-through">
+              {{ item.originalPrice | currency:'EGP':'symbol':'1.0-0' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quantity and Actions -->
+      <div class="flex justify-between items-center border-t border-purple-100 pt-3 mt-3">
+        <!-- Quantity Controls -->
+        <div class="flex items-center border border-black rounded-lg">
+          <button (click)="updateQuantity(item, item.quantity - 1)" 
+                  class="px-2 py-1 text-black hover:bg-gray-100 transition">
+            <i class="fas fa-minus text-xs"></i>
+          </button>
+          <span class="px-3 py-1 border-x border-black text-black text-sm">{{ item.quantity }}</span>
+          <button (click)="updateQuantity(item, item.quantity + 1)" 
+                  class="px-2 py-1 text-black hover:bg-gray-100 transition">
+            <i class="fas fa-plus text-xs"></i>
+          </button>
+        </div>
+
+        <!-- Subtotal and Remove -->
+        <div class="flex items-center space-x-3">
+          <span class="font-semibold text-black text-sm">
+            {{ (item.currentPrice * item.quantity) | currency:'EGP':'symbol':'1.0-0' }}
+          </span>
+          <button (click)="removeItem(item._id!)" 
+                  class="text-red-500 hover:text-red-700">
+            <i class="fas fa-trash text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary Mobile -->
+    <div class="bg-white rounded-lg shadow-sm p-4 border border-purple-200 mt-4">
+      <h3 class="font-bold text-black text-lg mb-3">Order Summary</h3>
+      
+      <div class="space-y-2">
+        <div class="flex justify-between">
+          <span class="text-black text-sm">Subtotal</span>
+          <span class="font-medium text-black text-sm">{{ subtotal | currency:'EGP':'symbol':'1.0-0' }}</span>
+        </div>
+        
+        <div class="flex justify-between">
+          <span class="text-black text-sm">Shipping</span>
+          <span class="font-medium text-black text-sm">
+            {{ shipping === 0 ? 'Free' : (shipping | currency:'EGP':'symbol':'1.0-0') }}
+          </span>
+        </div>
+        
+        <div class="flex justify-between border-t border-purple-300 pt-2 mt-2">
+          <span class="font-bold text-black">Total</span>
+          <span class="font-bold text-green-800">{{ total | currency:'EGP':'symbol':'1.0-0' }}</span>
+        </div>
+      </div>
+      
+      <button (click)="goToCheckout()"
+              class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg font-medium mt-4 text-sm md:text-base">
+        Proceed to Checkout
+      </button>
+    </div>
+  </div>
+
+  <!-- Cart Table - Desktop View -->
+  <div *ngIf="!isLoading && cartItems.length > 0" class="hidden md:block bg-white rounded-xl shadow-md overflow-hidden border border-purple-200">
+    <!-- Table Header -->
+    <div class="grid grid-cols-12 bg-purple-100 p-4 text-purple-800 font-medium text-sm md:text-base">
+      <div class="col-span-5">Product</div>
+      <div class="col-span-2 text-center">Price</div>
+      <div class="col-span-3 text-center">Quantity</div>
+      <div class="col-span-2 text-right">Subtotal</div>
+    </div>
+
+    <!-- Table Rows -->
+    <div class="divide-y divide-purple-100">
+      <div *ngFor="let item of cartItems" class="grid grid-cols-12 items-center p-4 hover:bg-purple-50 transition-colors">
+        <!-- Product Column -->
+        <div class="col-span-5 flex items-center space-x-4">
+          <div class="w-16 h-16 md:w-20 md:h-20 bg-purple-50 rounded-lg overflow-hidden border border-purple-200">
+            <img [src]="'http://localhost:8000/uploads/' + item.productId.product_image" 
+                 [alt]="item.productId.product_title"
+                 class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h3 class="font-semibold text-black text-sm md:text-base">{{ item.productId.product_title }}</h3>
+            <div class="flex space-x-3 mt-1">
+              <!-- <span *ngIf="item.size" class="text-xs md:text-sm text-black">Size: {{item.size}}</span> -->
+              <!-- <span *ngIf="item.color" class="text-xs md:text-sm text-black">Color: {{item.color}}</span> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Price Column -->
+        <div class="col-span-2 text-center">
+          <span class="text-green-700 font-medium text-sm md:text-base">{{ item.currentPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
+          <div *ngIf="item.currentPrice !== item.originalPrice" class="text-xs text-gray-400 line-through">
+            {{ item.originalPrice | currency:'EGP':'symbol':'1.0-0' }}
+          </div>
+        </div>
+
+        <!-- Quantity Column -->
+        <div class="col-span-3 flex justify-center">
+          <div class="flex items-center border border-black rounded-lg">
+            <button (click)="updateQuantity(item, item.quantity - 1)" 
+                    class="px-3 py-1 text-black hover:bg-gray-100 transition">
+              <i class="fas fa-minus text-xs"></i>
+            </button>
+            <span class="px-4 py-1 border-x border-black text-black text-sm md:text-base">{{ item.quantity }}</span>
+            <button (click)="updateQuantity(item, item.quantity + 1)" 
+                    class="px-3 py-1 text-black hover:bg-gray-100 transition">
+              <i class="fas fa-plus text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Subtotal Column -->
+        <div class="col-span-2 flex justify-end items-center space-x-4">
+          <span class="font-semibold text-black text-sm md:text-base">
+            {{ (item.currentPrice * item.quantity) | currency:'EGP':'symbol':'1.0-0' }}
+          </span>
+          <button (click)="removeItem(item._id!)" 
+                  class="text-red-500 hover:text-red-700">
+            <i class="fas fa-trash text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="bg-purple-50 p-4 md:p-6 border-t border-purple-200">
+      <div class="flex justify-end">
+        <div class="w-full md:w-1/3 space-y-2 md:space-y-3">
+          <div class="flex justify-between">
+            <span class="text-black text-sm md:text-base">Subtotal</span>
+            <span class="font-medium text-black text-sm md:text-base">{{ subtotal | currency:'EGP':'symbol':'1.0-0' }}</span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-black text-sm md:text-base">Shipping</span>
+            <span class="font-medium text-black text-sm md:text-base">
+              {{ shipping === 0 ? 'Free' : (shipping | currency:'EGP':'symbol':'1.0-0') }}
+            </span>
+          </div>
+          
+          <div class="flex justify-between border-t border-purple-300 pt-2 md:pt-3">
+            <span class="text-base md:text-lg font-bold text-black">Total</span>
+            <span class="text-base md:text-lg font-bold text-green-800">{{ total | currency:'EGP':'symbol':'1.0-0' }}</span>
+          </div>
+          
+          <button (click)="goToCheckout()"
+                  class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 md:py-3 px-4 rounded-lg font-medium mt-3 text-sm md:text-base">
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Changes Alert -->
+  <div *ngIf="priceChangedItems.length > 0" class="mt-6 md:mt-8 bg-white rounded-lg shadow-sm p-4 md:p-6 border border-yellow-300">
+    <div class="flex items-center mb-3 md:mb-4">
+      <i class="fas fa-exclamation-triangle text-lg md:text-xl text-yellow-600 mr-2 md:mr-3"></i>
+      <h2 class="text-lg md:text-xl font-bold text-yellow-700">Price Updates Required</h2>
+    </div>
+    
+    <p class="text-black text-sm md:text-base mb-3 md:mb-4">Some items in your cart have updated prices. Please review these changes:</p>
+    
+    <div class="space-y-3 md:space-y-4">
+      <div *ngFor="let item of priceChangedItems" class="p-3 md:p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 items-center">
+          <!-- Product Info -->
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <div class="w-10 h-10 md:w-12 md:h-12 bg-yellow-100 rounded overflow-hidden flex-shrink-0">
+              <img [src]="'http://localhost:8000' + item.productId.product_image" 
+                   [alt]="item.productId.product_title"
+                   class="w-full h-full object-cover">
+            </div>
+            <h3 class="font-medium text-yellow-700 text-sm md:text-base">{{ item.product_title }}</h3>
+          </div>
+          
+          <!-- Price Comparison -->
+          <div class="flex items-center justify-center space-x-1 md:space-x-2 text-sm md:text-base">
+            <span class="text-gray-400 line-through">{{ item.currentPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
+            <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+            <span class="font-medium text-green-700">{{ item.originalPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
+          </div>
+          
+          <!-- Actions -->
+          <div class="flex space-x-2 justify-end mt-2 md:mt-0">
+            <button (click)="confirmPrice(item._id!)"
+                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 md:px-4 md:py-2 rounded-md text-xs md:text-sm">
+              <i class="fas fa-check mr-1"></i> Accept
+            </button>
+            <button (click)="removeItem(item._id!)"
+                    class="bg-white text-red-600 border border-red-300 hover:bg-red-50 px-3 py-1 md:px-4 md:py-2 rounded-md text-xs md:text-sm">
+              <i class="fas fa-trash mr-1"></i> Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-3 text-xs md:text-sm text-black flex items-start">
+      <i class="fas fa-info-circle mt-0.5 md:mt-1 mr-1 md:mr-2 text-black"></i>
+      <span>You must accept the new prices or remove items to proceed to checkout</span>
+    </div>
+  </div>
+</div>
