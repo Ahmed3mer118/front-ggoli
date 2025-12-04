@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ProductsService } from '../../../core/services/dashboard/products.service';
 import { IProducts } from '../../../core/interfaceModel/interface.model';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-products',
