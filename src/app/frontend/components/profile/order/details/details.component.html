@@ -32,7 +32,7 @@
       <div *ngFor="let product of selectedOrderProducts" class="p-6 hover:bg-gray-50 transition-colors">
         <div class="flex items-start gap-4">
           <img
-            [src]="'https://ggoli-store.vercel.app/uploads/' + product.productId?.product_image"
+            [src]="'https://back-end-ggoli-production.up.railway.appuploads/' + product.productId?.product_image"
             [alt]="product.productId?.product_title"
             class="w-16 h-16 object-cover rounded-lg border border-gray-200"
           />
