@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { LayoutComponent as AuthLayoutComponent } from './core/layout/layout/layout.component';
 import { LoginComponent } from './core/components/login/login.component';
 import { RegisterComponent } from './core/components/register/register.component';
