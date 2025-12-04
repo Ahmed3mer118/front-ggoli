@@ -23,6 +23,7 @@ export class ProductListComponent implements OnInit {
     private _toaster:ToastrService
   ) {}
   productList: IProducts[] = [];
+  topProducts: IProducts[] = [];
   private subs: Subscription = new Subscription();
  
   async ngOnInit() {
@@ -34,8 +35,14 @@ export class ProductListComponent implements OnInit {
 
   }
   async getProducts() {
-     this._productServices.getProduct().subscribe((res: any) => {
+    this._productServices.getProduct().subscribe((res: any) => {
       this.productList = res.data;
+  
+      if (this._router.url === '/' || this._router.url === '/home') {
+        this.topProducts = this.productList.slice(0, 6); 
+      } else {
+        this.topProducts = this.productList; 
+      }
     });
   }
   addCart(products: any) {
